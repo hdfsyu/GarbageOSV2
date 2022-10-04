@@ -1,0 +1,6 @@
+kernel/a.out
+kernel/bin/GarbageOS.img
+kernel/bin/kernel.elf
+*.elf
+*.bin
+*.img
