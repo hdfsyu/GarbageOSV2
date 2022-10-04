@@ -20,15 +20,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-      - uses: "marvinpinto/action-automatic-releases@latest"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: false
-          title: "v*"
-          files: |
-            kernel/bin/GarbageOS.img
-            kernel/bin/kernel.elf
-
+      
       # Runs a set of commands using the runners shell
       - name: Compile
         run: |
@@ -37,3 +29,11 @@ jobs:
           cd ../kernel
           make kernel
           make buildimg
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          title: "v*"
+          files: |
+            kernel/bin/GarbageOS.img
+            kernel/bin/kernel.elf
