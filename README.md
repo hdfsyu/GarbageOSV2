@@ -18,5 +18,7 @@ All you gotta do is run the "run.sh" file in the root of the project dir, like t
 `./run.sh`
 It will compile everything for you, and run it in QEMU
 # Real Hardware
-Might be a bit buggy or something, also there are no good display drivers, so its gonna run at like 640x480
+~Might be a bit buggy or something, also there are no good display drivers, so its gonna run at like 640x480~
+It runs fine on my laptop, i used a usb and balenaetcher to flash the usb
+
 
