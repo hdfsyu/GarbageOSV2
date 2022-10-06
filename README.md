@@ -12,7 +12,7 @@ sudo apt install mtools build-essentials`
 In order to install QEMU (Linux) open up terminal and type
 `sudo apt update
 sudo apt install qemu qemu-user qemu-utils`
-In order to install QEMU (Windows) go (here)[qemu.org] and choose Windows, then download the installer file.
+In order to install QEMU (Windows) go [here](qemu.org) and choose Windows, then download the installer file.
 ## Steps
 All you gotta do is run the "run.sh" file in the root of the project dir, like this:
 `./run.sh`
