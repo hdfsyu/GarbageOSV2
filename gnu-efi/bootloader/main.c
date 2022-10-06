@@ -135,8 +135,8 @@ EFI_STATUS efi_main (EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable) {
 	}
 	Print(L"Kernel is OK, booting the kernel... (see what i did there hehe)\n\r");
 	void (*KernelStart)(Framebuffer*, PSF1_FONT*) = ((__attribute__((sysv_abi)) void (*)(Framebuffer*, PSF1_FONT*))header.e_entry);
-	//PSF1_FONT* newFont = LoadPSF1Font(NULL, L"zap-ext-light18.psf", ImageHandle, SystemTable);
-	PSF1_FONT* newFont = LoadPSF1Font(NULL, L"zap-ext-vga16.psf", ImageHandle, SystemTable); // use this if you want to use MS-DOS fonts (not actually MS-DOS fonts, just ones that look similar to it)
+	PSF1_FONT* newFont = LoadPSF1Font(NULL, L"zap-ext-light18.psf", ImageHandle, SystemTable);
+	//PSF1_FONT* newFont = LoadPSF1Font(NULL, L"zap-ext-vga16.psf", ImageHandle, SystemTable); // use this if you want to use MS-DOS fonts (not actually MS-DOS fonts, just ones that look similar to it)
 	if(newFont==NULL){
 		Print(L"font isnt valid or it isnt found, so no fancy stuff for you!");
 	}else{
