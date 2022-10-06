@@ -90,6 +90,13 @@ int memcmp(const void* aptr, const void* bptr, size_t n){
 	}
 	return 0;
 }
+typedef struct{
+	Framebuffer* framebuffer;
+	PSF1_FONT* psf1_Font;
+	EFI_MEMORY_DESCRIPTOR* mMap;
+	UINTN mMapSize;
+    UINTN mMapDescSize;
+} BootInfo;
 EFI_STATUS efi_main (EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable) {
 	InitializeLib(ImageHandle,SystemTable);
 	Print(L"the most garbage os ever \n\r");
@@ -134,7 +141,6 @@ EFI_STATUS efi_main (EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable) {
 		}
 	}
 	Print(L"Kernel is OK, booting the kernel... (see what i did there hehe)\n\r");
-	void (*KernelStart)(Framebuffer*, PSF1_FONT*) = ((__attribute__((sysv_abi)) void (*)(Framebuffer*, PSF1_FONT*))header.e_entry);
 	PSF1_FONT* newFont = LoadPSF1Font(NULL, L"zap-ext-light18.psf", ImageHandle, SystemTable);
 	//PSF1_FONT* newFont = LoadPSF1Font(NULL, L"zap-ext-vga16.psf", ImageHandle, SystemTable); // use this if you want to use MS-DOS fonts (not actually MS-DOS fonts, just ones that look similar to it)
 	if(newFont==NULL){
@@ -144,6 +150,22 @@ EFI_STATUS efi_main (EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable) {
 	}
 	Framebuffer* newBuffer = InitGOP();
 	Print(L"Base: 0x%x\n\rSize: 0x%x\n\rWidth: %d\n\rHeight: %d\n\rPixelsPerScanLine: %d\n\r", newBuffer->BaseAddress, newBuffer->BufferSize, newBuffer->Width, newBuffer->Height, newBuffer-> PixelsPerScanLine);
-	KernelStart(newBuffer, newFont);
+	EFI_MEMORY_DESCRIPTOR* Map = NULL;
+	UINTN MapSize, MapKey;
+	UINTN DescriptorSize;
+	UINT32 DescriptorVersion;{
+		SystemTable->BootServices->GetMemoryMap(&MapSize, Map, &MapKey, &DescriptorSize, &DescriptorVersion);
+		SystemTable->BootServices->AllocatePool(EfiLoaderData, MapSize, (void**)&Map);
+		SystemTable->BootServices->GetMemoryMap(&MapSize, Map, &MapKey, &DescriptorSize, &DescriptorVersion);
+	}
+	void (*KernelStart)(BootInfo*) = ((__attribute__((sysv_abi)) void (*)(BootInfo*))header.e_entry);
+	BootInfo bootInfo;
+	bootInfo.framebuffer = newBuffer;
+	bootInfo.psf1_Font = newFont;
+	bootInfo.mMap = Map;
+	bootInfo.mMapSize = MapSize;
+	bootInfo.mMapDescSize = DescriptorSize;
+	SystemTable->BootServices->ExitBootServices(ImageHandle, MapKey);
+	KernelStart(&bootInfo);
 	return EFI_SUCCESS; // Exit the UEFI application
 }
