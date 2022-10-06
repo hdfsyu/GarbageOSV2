@@ -18,7 +18,7 @@ All you gotta do is run the "run.sh" file in the root of the project dir, like t
 `./run.sh`
 It will compile everything for you, and run it in QEMU
 # Real Hardware
-Might be a bit buggy or something, also there are no good display drivers, so its gonna run at like 640x480
+~Might be a bit buggy or something, also there are no good display drivers, so its gonna run at like 640x480~ It runs fine on my laptop, i used a usb and balenaetcher to flash the usb, also the display drivers are fine! so no need to worry about that.
 # Notes and bugs
 * Bug: The text that is shown at boot up (the most garbage os ever) is uncentered and overlaying text (on real machines) This is due to a fact that the X and Y positions of the text is screwed up, bug is getting fixed in next update
 * Note: When flashing to a USB stick, you must change the name of the EFI file (which is located in EFI/BOOT on the EFI partition of the USB stick).
