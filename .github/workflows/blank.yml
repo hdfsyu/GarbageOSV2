@@ -31,8 +31,8 @@ jobs:
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
-          automatic_release_tag: "1.1"
-          title: "Release 1.1"
+          automatic_release_tag: "1.2"
+          title: "Release 1.2"
           files: |
             kernel/bin/GarbageOS.img
             kernel/bin/kernel.elf
