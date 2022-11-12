@@ -8,10 +8,10 @@ QEMU, build-essentials, mtools and WSL2 (if you are on windows)
 In order to install build-essentials and mtools, open up terminal (or WSL2 if you are on windows)
 then type
 `sudo apt update
-sudo apt install mtools build-essentials`
+&& sudo apt install mtools build-essential`
 In order to install QEMU (Linux) open up terminal and type
 `sudo apt update
-sudo apt install qemu qemu-user qemu-utils`
+&& sudo apt install qemu qemu-user qemu-utils`
 In order to install QEMU (Windows) go [here](https://qemu.org) and choose Windows, then download the installer file.
 ## Steps
 All you gotta do is run the "run.sh" file in the root of the project dir, like this:
