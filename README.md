@@ -5,10 +5,10 @@ Aaaaaaaaaaaand also including Lisa kernel V2!
 ## Dependencies
 QEMU, build-essentials, mtools and WSL2 (if you are on windows)
 ### Installing tools
-In order to install build-essentials and mtools, open up terminal (or WSL2 if you are on windows)
+In order to install build-essentials, clang and mtools, open up terminal (or WSL2 if you are on windows)
 then type
 `sudo apt update
-&& sudo apt install mtools build-essential`
+&& sudo apt install mtools build-essential clang`
 In order to install QEMU (Linux) open up terminal and type
 `sudo apt update
 && sudo apt install qemu qemu-user qemu-utils`
