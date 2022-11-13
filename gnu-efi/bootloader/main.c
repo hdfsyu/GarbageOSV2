@@ -28,10 +28,10 @@ Framebuffer* InitGOP(){
 	EFI_STATUS status;
 	status = uefi_call_wrapper(BS->LocateProtocol, 3, &gopGuid, NULL, (void**)&gop);
 	if(EFI_ERROR(status)){
-		Print(L"cant find GOP :((\n\r");
+		Print(L"Unable to find GOP.\n\r");
 		return NULL;
 	}else{
-		Print(L"we found GOP, yay! :D\n\r");
+		Print(L"Located GOP.\n\r");
 	}
 	framebuffer.BaseAddress = (void*)gop->Mode->FrameBufferBase;
 	framebuffer.BufferSize = gop->Mode->FrameBufferSize;
@@ -102,9 +102,9 @@ EFI_STATUS efi_main (EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable) {
 	Print(L"the most garbage os ever \n\r");
 	EFI_FILE* Kernel = LoadFile(NULL, L"kernel.elf", ImageHandle, SystemTable);
 	if(Kernel==NULL){
-		Print(L"bad luck, no kernel for you! \n\r");
+		Print(L"Unable to find kernel.\n\r");
 	}else{
-		Print(L"we found the kernel! \n\r");
+		Print(L"Kernel found.\n\r");
 	}
 	Elf64_Ehdr header;{
 		UINTN FileInfoSize;
@@ -116,9 +116,9 @@ EFI_STATUS efi_main (EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable) {
 		Kernel->Read(Kernel, &size, &header);
 	}
 	if(memcmp(&header.e_ident[EI_MAG0], ELFMAG, SELFMAG) != 0 || header.e_ident[EI_CLASS] != ELFCLASS64 || header.e_ident[EI_DATA] != ELFDATA2LSB || header.e_type != ET_EXEC || header.e_machine != EM_X86_64 || header.e_version != EV_CURRENT){
-		Print(L"format is bad, i am sorry :(\r\n");
+		Print(L"Format is bad.(\r\n");
 	}else{
-		Print(L"format is fine, :D\r\n");
+		Print(L"Format is good\r\n");
 	}
 	Elf64_Phdr* phdrs;{
 		Kernel->SetPosition(Kernel, header.e_phoff);
@@ -140,13 +140,13 @@ EFI_STATUS efi_main (EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable) {
 			}
 		}
 	}
-	Print(L"Kernel is OK, booting the kernel... (see what i did there hehe)\n\r");
+	Print(L"Kernel is OK, booting the kernel...\n\r");
 	PSF1_FONT* newFont = LoadPSF1Font(NULL, L"zap-ext-light18.psf", ImageHandle, SystemTable);
 	//PSF1_FONT* newFont = LoadPSF1Font(NULL, L"zap-ext-vga16.psf", ImageHandle, SystemTable); // use this if you want to use MS-DOS fonts (not actually MS-DOS fonts, just ones that look similar to it)
 	if(newFont==NULL){
-		Print(L"font isnt valid or it isnt found, so no fancy stuff for you!");
+		Print(L"Font could not be found or is corrupted.\n\r");
 	}else{
-		Print(L"eyyy you get fancy text because THE FONT WORKS! char size = %d\n\r", newFont->psf1_Header->charsize);
+		Print(L"Font found. Character size is %d\n\r", newFont->psf1_Header->charsize);
 	}
 	Framebuffer* newBuffer = InitGOP();
 	Print(L"Base: 0x%x\n\rSize: 0x%x\n\rWidth: %d\n\rHeight: %d\n\rPixelsPerScanLine: %d\n\r", newBuffer->BaseAddress, newBuffer->BufferSize, newBuffer->Width, newBuffer->Height, newBuffer-> PixelsPerScanLine);
