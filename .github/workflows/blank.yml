@@ -23,7 +23,7 @@ jobs:
       - uses: NatoNathan/increment-semantic-version@v1.0.0
         with:
           # The current semantic version you want to increment
-          current-version: '${{ steps.bump_version.outputs.automatic_releases_tag }}'
+          current-version: ${{ steps.bump_version.outputs.automatic_releases_tag }}
           # The versions fragment you want to increment. possible options are [ major | feature | bug | alpha | beta | rc ]
           version-fragment: bug
       # Runs a set of commands using the runners shell
