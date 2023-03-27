@@ -18,12 +18,20 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+        id: get_current_release
+      - name: Get Current Release Tag 
+      - uses: joutvhu/get-release@v1
+        with:
+          debug: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         # You may pin to the exact commit or the version.
   # uses: NatoNathan/increment-semantic-version@52e39863ebb536d57ec22228148d1e462f96f7a5
+        id: bump_version
       - uses: NatoNathan/increment-semantic-version@v1.0.0
         with:
           # The current semantic version you want to increment
-          current-version: ${{ steps.bump_version.outputs.automatic_releases_tag }}
+          current-version: ${{ steps.release_build.outputs.automatic_releases_tag }}
           # The versions fragment you want to increment. possible options are [ major | feature | bug | alpha | beta | rc ]
           version-fragment: bug
       # Runs a set of commands using the runners shell
@@ -34,6 +42,7 @@ jobs:
           cd ../kernel
           make kernel
           make buildimg
+        id: release_build
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
