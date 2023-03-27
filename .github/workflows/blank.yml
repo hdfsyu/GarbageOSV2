@@ -20,11 +20,18 @@ jobs:
       - uses: actions/checkout@v3
         # You may pin to the exact commit or the version.
   # uses: NatoNathan/increment-semantic-version@52e39863ebb536d57ec22228148d1e462f96f7a5
+      - name: Get Release
+      # You may pin to the exact commit or the version.
+      # uses: joutvhu/get-release@144629279c62511778ae157f397f35c358626160
+        id: get_latest_release
+      - uses: joutvhu/get-release@v1.0.2
+        with:
+          latest: true
         id: bump_version
       - uses: NatoNathan/increment-semantic-version@v1.0.0
         with:
           # The current semantic version you want to increment
-          current-version: ${{ steps.release_files.outputs.automatic_releases_tag }}
+          current-version: ${{ steps.get_latest_release.outputs.tag_name}}
           # The versions fragment you want to increment. possible options are [ major | feature | bug | alpha | beta | rc ]
           version-fragment: bug
       # Runs a set of commands using the runners shell
