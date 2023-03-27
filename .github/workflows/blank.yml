@@ -26,6 +26,8 @@ jobs:
       - uses: joutvhu/get-release@v1.0.2
         with:
           latest: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         id: bump_version
       - uses: NatoNathan/increment-semantic-version@v1.0.0
         with:
