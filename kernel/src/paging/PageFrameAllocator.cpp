@@ -3,6 +3,7 @@ uint64_t freemem;
 uint64_t reservedmem;
 uint64_t usedmem;
 bool initd = false; //is initialized?
+PageFrameAllocator globalAlloc;
 void PageFrameAllocator::ReadEFIMemMap(EFI_MEMORY_DESCRIPTOR* memMap, size_t memMapSize, size_t memMapDescSize){
     if(initd) return;
     initd = true;

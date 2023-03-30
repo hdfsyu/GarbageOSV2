@@ -1,8 +1,8 @@
 #pragma once
-#include "efiMemory.h"
+#include "../efiMemory.h"
 #include <stdint.h>
-#include "bitmap.h"
-#include "mem.h"
+#include "../bitmap.h"
+#include "../mem.h"
 class PageFrameAllocator{
     public:
     void ReadEFIMemMap(EFI_MEMORY_DESCRIPTOR* memMap, size_t memMapSize, size_t memMapDescSize);
@@ -22,3 +22,4 @@ class PageFrameAllocator{
     void ReservePages(void* address, uint64_t pcount);
     void UnreservePages(void* address, uint64_t pcount);
 };
+extern PageFrameAllocator globalAlloc;
