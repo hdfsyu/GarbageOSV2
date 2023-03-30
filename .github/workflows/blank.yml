@@ -18,7 +18,23 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-      
+        # You may pin to the exact commit or the version.
+  # uses: NatoNathan/increment-semantic-version@52e39863ebb536d57ec22228148d1e462f96f7a5
+      # You may pin to the exact commit or the version.
+      # uses: joutvhu/get-release@144629279c62511778ae157f397f35c358626160
+        id: get_latest_release
+      - uses: joutvhu/get-release@v1.0.2
+        with:
+          latest: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        id: bump_version
+      - uses: NatoNathan/increment-semantic-version@v1.0.0
+        with:
+          # The current semantic version you want to increment
+          current-version: '${{ steps.get_latest_release.outputs.tag_name }}'
+          # The versions fragment you want to increment. possible options are [ major | feature | bug | alpha | beta | rc ]
+          version-fragment: bug
       # Runs a set of commands using the runners shell
       - name: Compile
         run: |
@@ -27,12 +43,13 @@ jobs:
           cd ../kernel
           make kernel
           make buildimg
+        id: release_files
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
-          automatic_release_tag: "1.2"
-          title: "Release 1.2"
+          automatic_release_tag: "${{ steps.bump_version.outputs.next-version }}"
+          title: "Release ${{ steps.bump_version.outputs.next-version }}"
           files: |
             kernel/bin/GarbageOS.img
             kernel/bin/kernel.elf
